@@ -13,10 +13,8 @@
     <meta property="og:video:width" content="360" />
     <meta property="og:video:height" content="640" />
     <meta property="og:url" content="{{ .YoutubeURL }}" />
-    <meta property="og:image" content="{{ .Image }}" />
     <meta property="og:description" content="{{ .Description }}" />
     <meta property="og:type" content="video" />
-    <meta property="og:logo" content="{{ .Image }}" />
     <script>
         let url=new URL("{{ .YoutubeURL }}"),id="{{ .YoutubeVideoID }}",tc="&t="+url.searchParams.get("t"),ws="watch?v="+id+tc;window.location="youtube:"+ws,setTimeout(function(){window.location="vnd.youtube:"+ws},25),setTimeout(function(){window.location=url.href},50);
     </script>
