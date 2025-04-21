@@ -22,6 +22,7 @@ func New() (*App, error) {
 		proxy.NewServer,
 		wire.FieldsOf(new(Config), "Token", "HTTPort"),
 		wire.Bind(new(tg.Converter), new(*koutube_conv.Converter)),
+		wire.Bind(new(proxy.VideoIDExtractor), new(*koutube_conv.Converter)),
 	))
 	return &App{}, nil
 }

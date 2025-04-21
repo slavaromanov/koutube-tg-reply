@@ -24,7 +24,7 @@ func New() (*App, error) {
 	}
 	bot := tg.New(token, converter, logger)
 	proxyPort := config.HTTPort
-	server := proxy.NewServer(proxyPort)
+	server := proxy.NewServer(proxyPort, converter)
 	app, err := newApp(bot, server)
 	if err != nil {
 		return nil, err
