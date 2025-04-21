@@ -46,6 +46,17 @@ func (s *Server) Run() error {
 			http.Error(w, err.Error(), http.StatusForbidden)
 			return
 		}
+		iresp, err := http.Get(i.IgermanURL)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusForbidden)
+			return
+		}
+		truVideoURL, err := iresp.Location()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusForbidden)
+			return
+		}
+		i.IgermanURL = truVideoURL.String()
 		if err := buildOG(w, i); err != nil {
 			http.Error(w, err.Error(), http.StatusForbidden)
 			return
