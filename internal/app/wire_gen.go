@@ -8,6 +8,7 @@ package app
 
 import (
 	"koutube-tg-reply/internal/koutube-conv"
+	"koutube-tg-reply/internal/proxy"
 	"koutube-tg-reply/internal/tg"
 )
 
@@ -22,7 +23,9 @@ func New() (*App, error) {
 		return nil, err
 	}
 	bot := tg.New(token, converter, logger)
-	app, err := newApp(bot)
+	proxyPort := config.HTTPort
+	server := proxy.NewServer(proxyPort)
+	app, err := newApp(bot, server)
 	if err != nil {
 		return nil, err
 	}

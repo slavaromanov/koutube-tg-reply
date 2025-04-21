@@ -41,7 +41,7 @@ func (c *Converter) ConvertVideoURL(s string) (bool, string) {
 	info := c.getVideoInfo(s)
 	switch info.Type {
 	case Shorts:
-		return true, fmt.Sprintf("https://koutu.be/shorts/%s", info.VideoID)
+		return true, fmt.Sprintf("https://glorytofight.ru/shorts/%s", info.VideoID)
 	default:
 		return false, ""
 	}
@@ -84,4 +84,12 @@ func (c *Converter) mapFromSubmatch(submatch []string) map[string]string {
 		m[c.groupKeys[i]] = s
 	}
 	return m
+}
+
+func (c *Converter) GetVideoID(s string) (string, error) {
+	if !c.re.MatchString(s) {
+		return "", fmt.Errorf("invalid video url")
+	}
+	info := c.getVideoInfo(s)
+	return info.VideoID, nil
 }

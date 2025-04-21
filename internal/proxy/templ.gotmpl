@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Putube</title>
+    <style>body{background-color:#1f1f1f;color:white;}a{color:#ff5d5b;}</style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="theme-color" content="#ff5d5b" />
+    <meta name="color-scheme" content="dark" />
+    <meta property="og:site_name" content="{{ .SiteName }}">
+    <meta property="og:video" content="{{ .IgermanURL }}" />
+    <meta property="og:video:secure_url" content="{{ .IgermanURL }}" />
+    <meta property="og:video:type" content="video/mp4" />
+    <meta property="og:video:width" content="360" />
+    <meta property="og:video:height" content="640" />
+    <meta property="og:url" content="{{ .YoutubeURL }}" />
+    <meta property="og:image" content="{{ .Image }}" />
+    <meta property="og:description" content="{{ .Description }}" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:image" content="https://img.youtube.com/vi/{{ .YoutubeVideoID }}/hqdefault.jpg" />
+    <meta property="og:logo" content="https://img.youtube.com/vi/{{ .YoutubeVideoID }}/hqdefault.jpg" />
+    <script>
+        let url=new URL("{{ .YoutubeURL }}"),id="{{ .YoutubeVideoID }}",tc="&t="+url.searchParams.get("t"),ws="watch?v="+id+tc;window.location="youtube:"+ws,setTimeout(function(){window.location="vnd.youtube:"+ws},25),setTimeout(function(){window.location=url.href},50);
+    </script>
+    <link rel="alternate" href="{{ .AlternateURL }}" type="application/json+oembed" title="{{ .AlternateTitle }}"/>
+</head>
+<body>
+Please wait...
+<a href="{{ .YoutubeURL }}">Or click here.</a>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'933e50aacadad352',t:'MTc0NTI1MzU0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

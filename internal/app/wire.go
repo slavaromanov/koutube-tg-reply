@@ -6,6 +6,7 @@ package app
 import (
 	"github.com/google/wire"
 	koutube_conv "koutube-tg-reply/internal/koutube-conv"
+	"koutube-tg-reply/internal/proxy"
 	"koutube-tg-reply/internal/tg"
 )
 
@@ -18,7 +19,8 @@ func New() (*App, error) {
 		NewConfig,
 		newApp,
 		newLogger,
-		wire.FieldsOf(new(Config), "Token"),
+		proxy.NewServer,
+		wire.FieldsOf(new(Config), "Token", "HTTPort"),
 		wire.Bind(new(tg.Converter), new(*koutube_conv.Converter)),
 	))
 	return &App{}, nil
