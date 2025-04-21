@@ -46,7 +46,9 @@ func (s *Server) Run() error {
 			http.Error(w, err.Error(), http.StatusForbidden)
 			return
 		}
-		iresp, err := http.Get(i.IgermanURL)
+		iresp, err := (&http.Client{CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		}}).Get(i.IgermanURL)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusForbidden)
 			return
