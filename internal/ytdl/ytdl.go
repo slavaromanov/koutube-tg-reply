@@ -61,10 +61,7 @@ func newCookieJar() *cookieJar {
 		if c == nil {
 			continue // Skip empty cookies
 		}
-		jar.SetCookies(&url.URL{
-			Scheme: "https",
-			Host:   c.Domain,
-		}, []*http.Cookie{c})
+		jar.cookies[c.Domain] = append(jar.cookies[c.Domain], c)
 	}
 	return jar
 }
