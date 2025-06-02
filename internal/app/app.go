@@ -4,13 +4,13 @@ import (
 	"context"
 
 	"go.uber.org/zap"
-	"koutube-tg-reply/internal/proxy"
+	"koutube-tg-reply/internal/http"
 	"koutube-tg-reply/internal/tg"
 )
 
 type App struct {
-	bot         *tg.Bot
-	proxyServer *proxy.Server
+	bot    *tg.Bot
+	server *http.Server
 }
 
 func newLogger() (*zap.Logger, error) {
@@ -22,14 +22,14 @@ func newLogger() (*zap.Logger, error) {
 	return logger, nil
 }
 
-func newApp(bot *tg.Bot, proxyServer *proxy.Server) (*App, error) {
+func newApp(bot *tg.Bot, proxyServer *http.Server) (*App, error) {
 	return &App{
-		bot:         bot,
-		proxyServer: proxyServer,
+		bot:    bot,
+		server: proxyServer,
 	}, nil
 }
 
 func (a *App) Run(ctx context.Context) error {
-	go a.proxyServer.Run()
+	go a.server.Start()
 	return a.bot.Run(ctx)
 }
