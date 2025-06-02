@@ -23,6 +23,7 @@ func NewServer(p HTTPPort, builder PageBuilder) *Server {
 	return &Server{
 		port:    string(p),
 		builder: builder,
+		logger:  zap.L().Named("http_server"),
 	}
 }
 
