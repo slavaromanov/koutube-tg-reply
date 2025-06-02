@@ -8,7 +8,7 @@ import (
 
 type Builder interface {
 	// Build generates the HTML page for the given video ID and stream URL.
-	Build(video youtube.Video, videoID, streamURL string) (string, error)
+	Build(video youtube.Video, streamURL string) (string, error)
 }
 
 type VideoStreamURLExtractor interface {
