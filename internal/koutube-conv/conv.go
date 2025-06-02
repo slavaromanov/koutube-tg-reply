@@ -34,6 +34,7 @@ func NewConverter(baseURL BaseURL) *Converter {
 	return &Converter{
 		re:        re,
 		groupKeys: re.SubexpNames(),
+		baseURL:   string(baseURL),
 	}
 }
 
