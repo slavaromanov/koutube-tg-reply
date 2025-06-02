@@ -34,7 +34,7 @@ func (s *Service) BuildPage(ctx context.Context, videoID string) (string, error)
 		return "", err
 	}
 
-	html, err := s.builder.Build(*video, videoID, streamURL)
+	html, err := s.builder.Build(*video, streamURL)
 	if err != nil {
 		return "", err
 	}

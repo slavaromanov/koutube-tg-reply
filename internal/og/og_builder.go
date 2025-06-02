@@ -21,7 +21,7 @@ func NewBuilder() *Builder {
 	}
 }
 
-func (b *Builder) Build(video youtube.Video, youtubeURL, streamURL string) (string, error) {
+func (b *Builder) Build(video youtube.Video, streamURL string) (string, error) {
 	buf := bytes.NewBuffer(nil)
 	thumbnail := ""
 	if len(video.Thumbnails) > 0 {
@@ -33,7 +33,7 @@ func (b *Builder) Build(video youtube.Video, youtubeURL, streamURL string) (stri
 		YoutubeVideoID: video.ID,
 		Image:          thumbnail,
 		Description:    video.Description,
-		Author:         "ЧЮПЕП",
+		Author:         video.Author,
 	})
 	if err != nil {
 		return "", err
