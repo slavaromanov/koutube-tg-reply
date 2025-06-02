@@ -12,14 +12,14 @@
     <meta property="og:video:type" content="video/mp4" />
     <meta property="og:video:width" content="360" />
     <meta property="og:video:height" content="640" />
-    <meta property="og:url" content="https://www.youtube.com/shorts/{{ .YoutubeID }}" />
+    <meta property="og:url" content="https://www.youtube.com/shorts/{{ .YoutubeVideoID }}" />
     <meta property="og:description" content="{{ .Description }}" />
     <meta property="og:type" content="video" />
     <script>
-        let url=new URL("https://www.youtube.com/shorts/{{ .YoutubeURL }}"),id="{{ .YoutubeVideoID }}",tc="&t="+url.searchParams.get("t"),ws="watch?v="+id+tc;window.location="youtube:"+ws,setTimeout(function(){window.location="vnd.youtube:"+ws},25),setTimeout(function(){window.location=url.href},50);
+        let url=new URL("https://www.youtube.com/shorts/{{ .YoutubeVideoID }}"),id="{{ .YoutubeVideoID }}",tc="&t="+url.searchParams.get("t"),ws="watch?v="+id+tc;window.location="youtube:"+ws,setTimeout(function(){window.location="vnd.youtube:"+ws},25),setTimeout(function(){window.location=url.href},50);
     </script>
 </head>
 <body>
-<a href="{{ .YoutubeURL }}">click here.</a>
+<a href="https://www.youtube.com/shorts/{{ .YoutubeVideoID }}">click here.</a>
 </body>
 </html>

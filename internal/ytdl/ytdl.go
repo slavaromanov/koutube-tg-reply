@@ -89,7 +89,7 @@ func NewYoutubeDL() *YoutubeDL {
 }
 
 func (dl *YoutubeDL) GetVideoInfo(ctx context.Context, videoID string) (*youtube.Video, string, error) {
-	return &youtube.Video{}, fmt.Sprintf("https://invidious.f5.si/latest_version?id=%s&itag=18", videoID), nil
+	return &youtube.Video{}, fmt.Sprintf("https://invidious.f5.si/latest_version?id=%s", videoID), nil
 	// video, err := dl.client.GetVideoContext(ctx,
 	// 	fmt.Sprintf("https://www.youtube.com/shorts/%s", videoID))
 	// if err != nil {
