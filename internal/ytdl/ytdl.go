@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/cookiejar"
+	"net/url"
 	"strings"
 
 	"github.com/kkdai/youtube/v2"
@@ -35,6 +36,14 @@ func NewYoutubeDL() *YoutubeDL {
 		}
 		cookies = append(cookies, c)
 	}
+	jar.SetCookies(&url.URL{
+		Scheme: "https",
+		Host:   "www.youtube.com",
+	}, cookies)
+	jar.SetCookies(&url.URL{
+		Scheme: "https",
+		Host:   "youtube.com",
+	}, cookies)
 	return &YoutubeDL{
 		client: &youtube.Client{
 			HTTPClient: &http.Client{
