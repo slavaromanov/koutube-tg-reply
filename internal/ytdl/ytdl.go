@@ -2,18 +2,80 @@ package ytdl
 
 import (
 	"context"
+	_ "embed"
+	"net/http"
+	"net/url"
+	"slices"
 	"strings"
+	"sync"
 
 	"github.com/kkdai/youtube/v2"
+	"github.com/mengzhuo/cookiestxt"
 )
 
 type YoutubeDL struct {
 	client *youtube.Client
 }
 
+var _ http.CookieJar = (*cookieJar)(nil)
+
+type cookieJar struct {
+	mu      sync.RWMutex
+	cookies map[string][]*http.Cookie
+}
+
+func (c *cookieJar) SetCookies(u *url.URL, cookies []*http.Cookie) {
+	for _, cookie := range cookies {
+		if !slices.Contains(c.cookies[u.Host], cookie) {
+			c.mu.Lock()
+			c.cookies[u.Host] = append(c.cookies[u.String()], cookie)
+			c.mu.Unlock()
+		}
+	}
+}
+
+func (c *cookieJar) Cookies(u *url.URL) []*http.Cookie {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	if cookies, ok := c.cookies[strings.TrimPrefix(u.Host, "www")]; ok {
+		return slices.Clone(cookies)
+	}
+	return nil
+}
+
+// cookies.txt should be in the netscape cookie file format.
+//
+//go:embed cookies.txt
+var initCookies string
+
+func newCookieJar() *cookieJar {
+	jar := &cookieJar{
+		cookies: make(map[string][]*http.Cookie),
+	}
+	lines := strings.Split(initCookies, "\n")
+	for _, line := range lines {
+		c, err := cookiestxt.ParseLine(line)
+		if err != nil {
+			continue // Skip invalid lines
+		}
+		if c == nil {
+			continue // Skip empty cookies
+		}
+		jar.SetCookies(&url.URL{
+			Scheme: "https",
+			Host:   c.Domain,
+		}, []*http.Cookie{c})
+	}
+	return jar
+}
+
 func NewYoutubeDL() *YoutubeDL {
 	return &YoutubeDL{
-		client: &youtube.Client{},
+		client: &youtube.Client{
+			HTTPClient: &http.Client{
+				Jar: newCookieJar(),
+			},
+		},
 	}
 }
 
