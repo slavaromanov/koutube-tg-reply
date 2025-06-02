@@ -88,8 +88,21 @@ func NewYoutubeDL() *YoutubeDL {
 	}
 }
 
-func (dl *YoutubeDL) GetVideoInfo(ctx context.Context, videoID string) (*youtube.Video, string, error) {
-	return &youtube.Video{}, fmt.Sprintf("https://invidious.f5.si/latest_version?id=%s", videoID), nil
+func (dl *YoutubeDL) GetVideoInfo(_ context.Context, videoID string) (*youtube.Video, string, error) {
+	c := http.Client{CheckRedirect: func(req *http.Request, via []*http.Request) error {
+		return http.ErrUseLastResponse // Prevent following redirects
+	}}
+	resp, err := c.Get(fmt.Sprintf("https://invidious.f5.si/latest_version?id=%s", videoID))
+	if err != nil {
+		return nil, "", err
+	}
+	rawURL, err := resp.Location()
+	if err != nil {
+		return nil, "", fmt.Errorf("failed to get redirect location: %w", err)
+	}
+	return &youtube.Video{
+		ID: videoID,
+	}, rawURL.String(), nil
 	// video, err := dl.client.GetVideoContext(ctx,
 	// 	fmt.Sprintf("https://www.youtube.com/shorts/%s", videoID))
 	// if err != nil {
