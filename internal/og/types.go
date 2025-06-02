@@ -7,4 +7,5 @@ type MetaInfo struct {
 	Image          string
 	Description    string
 	YoutubeURL     string
+	Author         string
 }

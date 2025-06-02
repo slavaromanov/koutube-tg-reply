@@ -33,6 +33,7 @@ func (b *Builder) Build(video youtube.Video, youtubeURL, streamURL string) (stri
 		YoutubeVideoID: video.ID,
 		Image:          thumbnail,
 		Description:    video.Description,
+		Author:         "ЧЮПЕП",
 	})
 	if err != nil {
 		return "", err

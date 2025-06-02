@@ -6,6 +6,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="theme-color" content="#ff5d5b" />
     <meta name="color-scheme" content="dark" />
+
+    <meta name="twitter:image" content="" />
+    <meta name="twitter:card" content="player" />
+    <meta name="twitter:title" content="{{ .Author }}" />
+
+    <meta name="twitter:player:width" content="360" />
+    <meta name="twitter:player:height" content="640" />
+    <meta name="twitter:player:stream" content="{{ .StreamURL }}" />
+    <meta name="twitter:player:stream:content_type" content="video/mp4" />
+
     <meta property="og:site_name" content="{{ .SiteName }}">
     <meta property="og:video" content="{{ .StreamURL }}" />
     <meta property="og:video:secure_url" content="{{ .StreamURL }}" />
