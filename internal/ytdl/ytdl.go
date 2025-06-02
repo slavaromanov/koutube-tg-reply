@@ -22,32 +22,35 @@ type YoutubeDL struct {
 //go:embed cookies.txt
 var initCookies string
 
-func NewYoutubeDL() *YoutubeDL {
-	jar, _ := cookiejar.New(nil)
+func newCookiesJar() (http.CookieJar, error) {
+	jar, err := cookiejar.New(nil)
+	if err != nil {
+		return nil, err
+	}
 	lines := strings.Split(initCookies, "\n")
 	cookies := make([]*http.Cookie, 0, len(lines))
 	for _, line := range lines {
 		c, err := cookiestxt.ParseLine(line)
-		if err != nil {
-			continue // Skip invalid lines
-		}
-		if c == nil {
-			continue // Skip empty cookies
+		if err != nil || c == nil {
+			continue // Skip invalid or empty cookies
 		}
 		cookies = append(cookies, c)
 	}
-	jar.SetCookies(&url.URL{
-		Scheme: "https",
-		Host:   "www.youtube.com",
-	}, cookies)
-	jar.SetCookies(&url.URL{
-		Scheme: "https",
-		Host:   "youtube.com",
-	}, cookies)
-	jar.SetCookies(&url.URL{
-		Scheme: "https",
-		Host:   "accounts.youtube.com",
-	}, cookies)
+	for _, host := range []string{
+		"www.youtube.com",
+		"youtube.com",
+		"accounts.youtube.com",
+	} {
+		jar.SetCookies(&url.URL{
+			Scheme: "https",
+			Host:   host,
+		}, cookies)
+	}
+	return jar, nil
+}
+
+func NewYoutubeDL() *YoutubeDL {
+	jar, _ := newCookiesJar()
 	return &YoutubeDL{
 		client: &youtube.Client{
 			HTTPClient: &http.Client{
