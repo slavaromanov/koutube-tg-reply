@@ -44,6 +44,10 @@ func NewYoutubeDL() *YoutubeDL {
 		Scheme: "https",
 		Host:   "youtube.com",
 	}, cookies)
+	jar.SetCookies(&url.URL{
+		Scheme: "https",
+		Host:   "accounts.youtube.com",
+	}, cookies)
 	return &YoutubeDL{
 		client: &youtube.Client{
 			HTTPClient: &http.Client{
