@@ -3,11 +3,13 @@ package ytdl
 import (
 	"context"
 	_ "embed"
+	"net"
 	"net/http"
 	"net/url"
 	"slices"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/kkdai/youtube/v2"
 	"github.com/mengzhuo/cookiestxt"
@@ -70,7 +72,16 @@ func NewYoutubeDL() *YoutubeDL {
 	return &YoutubeDL{
 		client: &youtube.Client{
 			HTTPClient: &http.Client{
-				Jar: newCookieJar(),
+				Transport: &http.Transport{
+					DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+						dialer := &net.Dialer{
+							Timeout:   30 * time.Second,
+							KeepAlive: 30 * time.Second,
+						}
+						return dialer.DialContext(ctx, "tcp6", addr)
+					},
+				},
+				// Jar: newCookieJar(),
 			},
 		},
 	}
