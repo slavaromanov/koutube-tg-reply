@@ -10,7 +10,7 @@ import (
 func TestYoutubeDL_GetVideoInfo(t *testing.T) {
 	dl := NewYoutubeDL()
 	ctx := context.Background()
-	videoID := "e08I6tnSL84"
+	videoID := "mehXi19as30"
 	_, info, err := dl.GetVideoInfo(ctx, videoID)
 	ass := assert.New(t)
 	ass.NoError(err)

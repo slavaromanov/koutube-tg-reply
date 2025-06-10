@@ -2,6 +2,7 @@ package ytdl
 
 import (
 	"context"
+	"crypto/tls"
 	_ "embed"
 	"fmt"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/kkdai/youtube/v2"
 	"github.com/mengzhuo/cookiestxt"
+	"github.com/quic-go/quic-go/http3"
 )
 
 type YoutubeDL struct {
@@ -55,6 +57,12 @@ func NewYoutubeDL() *YoutubeDL {
 		client: &youtube.Client{
 			HTTPClient: &http.Client{
 				Jar: jar,
+				Transport: &http3.Transport{
+					TLSClientConfig: &tls.Config{
+						InsecureSkipVerify: true,           // Disable certificate verification for testing
+						NextProtos:         []string{"h3"}, // Indicate HTTP/3 support
+					},
+				},
 			},
 		},
 	}
