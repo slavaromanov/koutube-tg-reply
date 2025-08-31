@@ -20,17 +20,21 @@ type VideoInfo struct {
 	Type    VideoType
 }
 
+type BaseURL string
+
 type Converter struct {
 	re        *regexp.Regexp
+	baseURL   string
 	groupKeys []string
 }
 
-func NewConverter() *Converter {
+func NewConverter(baseURL BaseURL) *Converter {
 	re := regexp.
 		MustCompile(`(?P<mobile>m\.)?youtu\.?be(\.com)?/(?P<browser>watch\?v=)?(?P<channel>c/|@)?(?P<stream>live/)?(?P<shorts>shorts/)?(?P<embed>embed/)?(?P<video_id>[0-9a-zA-Z_-]+).*(?P<playlist>list=[a-zA-Z0-9]+)?.*`)
 	return &Converter{
 		re:        re,
 		groupKeys: re.SubexpNames(),
+		baseURL:   string(baseURL),
 	}
 }
 
@@ -41,7 +45,7 @@ func (c *Converter) ConvertVideoURL(s string) (bool, string) {
 	info := c.getVideoInfo(s)
 	switch info.Type {
 	case Shorts:
-		return true, fmt.Sprintf("https://glorytofight.ru/shorts/%s", info.VideoID)
+		return true, fmt.Sprintf("%s/%s", c.baseURL, info.VideoID)
 	default:
 		return false, ""
 	}

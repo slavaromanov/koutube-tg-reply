@@ -7,9 +7,12 @@
 package app
 
 import (
+	"koutube-tg-reply/internal/http"
 	"koutube-tg-reply/internal/koutube-conv"
-	"koutube-tg-reply/internal/proxy"
+	"koutube-tg-reply/internal/og"
+	"koutube-tg-reply/internal/page"
 	"koutube-tg-reply/internal/tg"
+	"koutube-tg-reply/internal/ytdl"
 )
 
 // Injectors from wire.go:
@@ -17,14 +20,18 @@ import (
 func New() (*App, error) {
 	config := NewConfig()
 	token := config.Token
-	converter := koutube_conv.NewConverter()
+	baseURL := config.BaseURL
+	converter := koutube_conv.NewConverter(baseURL)
 	logger, err := newLogger()
 	if err != nil {
 		return nil, err
 	}
 	bot := tg.New(token, converter, logger)
-	proxyPort := config.HTTPort
-	server := proxy.NewServer(proxyPort, converter)
+	httpPort := config.HTTPort
+	builder := og.NewBuilder()
+	youtubeDL := ytdl.NewYoutubeDL()
+	service := page.NewService(builder, youtubeDL)
+	server := http.NewServer(httpPort, service)
 	app, err := newApp(bot, server)
 	if err != nil {
 		return nil, err
